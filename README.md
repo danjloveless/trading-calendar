@@ -4,21 +4,46 @@
 [![Documentation](https://docs.rs/trading-calendar/badge.svg)](https://docs.rs/trading-calendar)
 [![License](https://img.shields.io/crates/l/trading-calendar.svg)](https://github.com/danjloveless/trading-calendar#license)
 [![CI](https://github.com/danjloveless/trading-calendar/workflows/CI/badge.svg)](https://github.com/danjloveless/trading-calendar/actions)
+[![Rust Version](https://img.shields.io/badge/rust-1.65+-blue.svg)](https://www.rust-lang.org)
 
-A comprehensive trading calendar for global financial markets, providing holidays, trading hours, and early close information.
+A comprehensive trading calendar for global financial markets, providing holidays, trading hours, and early close information. Built with performance and reliability in mind, this library supports major exchanges worldwide with accurate holiday calculations and timezone handling.
 
-## Features
+## 📚 Documentation
 
-- 🌍 **Multiple Markets**: NYSE, NASDAQ, LSE, TSE, TSX
-- ⏰ **Trading Hours**: Regular, pre-market, and after-hours sessions
-- 📅 **Holiday Detection**: All market holidays with weekend adjustments
+- **[API Documentation](https://docs.rs/trading-calendar)** - Complete API reference
+- **[Examples](./examples/)** - Practical usage examples and tutorials
+- **[Changelog](./CHANGELOG.md)** - Version history and changes
+- **[Contributing](./CONTRIBUTING.md)** - How to contribute to the project
+- **[Release Notes v0.2.2](./RELEASE_NOTES_v0.2.2.md)** - Detailed release information
+
+## ✨ Features
+
+- 🌍 **Multiple Markets**: NYSE, NASDAQ, LSE, TSE, TSX with accurate holiday calendars
+- ⏰ **Trading Hours**: Regular, pre-market, and after-hours sessions with timezone support
+- 📅 **Holiday Detection**: All market holidays with weekend adjustments and early closes
 - 🕐 **Early Closes**: Half-day schedules (Christmas Eve, Black Friday, etc.)
-- 🌐 **Timezone Support**: Automatic handling of market timezones
-- 🚀 **Performance**: Efficient LRU caching
-- 🔒 **Thread Safe**: Concurrent access support
-- 📆 **2020-2030 Support**: Comprehensive holiday calendars
+- 🌐 **Timezone Support**: Automatic handling of market timezones (ET, GMT, JST)
+- 🚀 **Performance**: Efficient LRU caching for holiday calculations
+- 🔒 **Thread Safe**: Concurrent access support with proper synchronization
+- 📆 **Date Range**: Comprehensive support for years 2020-2030
+- 🔧 **Error Handling**: Robust error handling with detailed error messages
+- 📦 **Serialization**: Optional serde support for JSON serialization
 
-## Quick Start
+## 🚀 Quick Start
+
+### Installation
+
+Add to your `Cargo.toml`:
+
+```toml
+[dependencies]
+trading-calendar = "0.2.2"
+
+# With serialization support
+trading-calendar = { version = "0.2.2", features = ["serialization"] }
+```
+
+### Basic Usage
 
 ```rust
 use trading_calendar::{TradingCalendar, Market};
@@ -26,7 +51,7 @@ use trading_calendar::{TradingCalendar, Market};
 fn main() -> trading_calendar::Result<()> {
     let nyse = TradingCalendar::new(Market::NYSE)?;
     
-    // Check if market is open
+    // Check if market is open now
     if nyse.is_open_now()? {
         println!("NYSE is open for trading!");
     }
@@ -45,40 +70,46 @@ fn main() -> trading_calendar::Result<()> {
 }
 ```
 
-## Supported Markets
+## 📊 Supported Markets
 
-| Market | Regular Hours (Local) | Pre-Market | After-Hours | Status |
-|--------|----------------------|------------|-------------|---------|
-| NYSE | 9:30 AM - 4:00 PM ET | 4:00 AM - 9:30 AM | 4:00 PM - 8:00 PM | ✅ Full Support |
-| NASDAQ | 9:30 AM - 4:00 PM ET | 4:00 AM - 9:30 AM | 4:00 PM - 8:00 PM | ✅ Full Support |
-| LSE | 8:00 AM - 4:30 PM GMT | - | - | ✅ Full Support |
-| TSE | 9:00 AM - 3:00 PM JST | - | - | ✅ Full Support |
-| TSX | 9:30 AM - 4:00 PM ET | - | - | ✅ Full Support |
+| Market | Regular Hours (Local) | Pre-Market | After-Hours | Timezone | Status |
+|--------|----------------------|------------|-------------|----------|---------|
+| NYSE | 9:30 AM - 4:00 PM ET | 4:00 AM - 9:30 AM | 4:00 PM - 8:00 PM | ET | ✅ Full Support |
+| NASDAQ | 9:30 AM - 4:00 PM ET | 4:00 AM - 9:30 AM | 4:00 PM - 8:00 PM | ET | ✅ Full Support |
+| LSE | 8:00 AM - 4:30 PM GMT | - | - | GMT | ✅ Full Support |
+| TSE | 9:00 AM - 3:00 PM JST | - | - | JST | ✅ Full Support |
+| TSX | 9:30 AM - 4:00 PM ET | - | - | ET | ✅ Full Support |
 
-## Thread Safety
+## 🔧 API Reference
 
-The `TradingCalendar` is thread-safe and can be shared across threads:
+### Core Methods
 
 ```rust
-use std::sync::Arc;
 use trading_calendar::{TradingCalendar, Market};
 
-fn main() -> trading_calendar::Result<()> {
-    let calendar = Arc::new(TradingCalendar::new(Market::NYSE)?);
+let calendar = TradingCalendar::new(Market::NYSE)?;
 
-    // Share calendar across threads safely
-    let cal_clone = Arc::clone(&calendar);
-    std::thread::spawn(move || {
-        let is_open = cal_clone.is_open_now().unwrap_or(false);
-    });
-    
-    Ok(())
-}
+// Market status
+let is_open = calendar.is_open_now()?;
+let is_trading = calendar.is_trading_day(date)?;
+let is_holiday = calendar.is_holiday(date)?;
+
+// Time navigation
+let next_open = calendar.next_open()?;
+let next_close = calendar.next_close()?;
+let next_trading_day = calendar.next_trading_day(date)?;
+let prev_trading_day = calendar.prev_trading_day(date)?;
+
+// Trading hours
+let hours = calendar.trading_hours(date);
+let is_early_close = calendar.is_early_close(date)?;
+
+// Utility methods
+let trading_days = calendar.trading_days_in_month(year, month)?;
+let count = calendar.count_trading_days(start_date, end_date)?;
 ```
 
-## Error Handling
-
-The library uses proper error handling with `Result` types:
+### Error Handling
 
 ```rust
 use trading_calendar::{TradingCalendar, Market, CalendarError};
@@ -97,66 +128,126 @@ fn main() -> trading_calendar::Result<()> {
 }
 ```
 
-## Performance
+## 🔄 Thread Safety
 
-The library uses efficient caching to ensure optimal performance:
+The `TradingCalendar` is thread-safe and can be shared across threads:
 
-- Holiday calculations are cached per year using LRU cache
-- Thread-safe concurrent access with proper eviction
-- Minimal allocations with optimized data structures
+```rust
+use std::sync::Arc;
+use trading_calendar::{TradingCalendar, Market};
 
-## Installation
+fn main() -> trading_calendar::Result<()> {
+    let calendar = Arc::new(TradingCalendar::new(Market::NYSE)?);
 
-Add this to your `Cargo.toml`:
-
-```toml
-[dependencies]
-trading-calendar = "0.2.0"
+    // Share calendar across threads safely
+    let cal_clone = Arc::clone(&calendar);
+    std::thread::spawn(move || {
+        let is_open = cal_clone.is_open_now().unwrap_or(false);
+        println!("Market open: {}", is_open);
+    });
+    
+    Ok(())
+}
 ```
 
-## Key Methods
+## 📦 Serialization Support
+
+Enable serialization features for JSON support:
 
 ```rust
 use trading_calendar::{TradingCalendar, Market};
 
+// In Cargo.toml: trading-calendar = { version = "0.2.2", features = ["serialization"] }
+
 let calendar = TradingCalendar::new(Market::NYSE)?;
-
-// Check if market is open now
-let is_open = calendar.is_open_now()?;
-
-// Check if a specific date is a trading day
-let is_trading = calendar.is_trading_day(date)?;
-
-// Check if a specific date is a holiday
-let is_holiday = calendar.is_holiday(date)?;
-
-// Get next market open time
-let next_open = calendar.next_open()?;
-
-// Get next market close time
-let next_close = calendar.next_close()?;
-
-// Get trading hours for a specific date
-let hours = calendar.trading_hours(date);
+let json = serde_json::to_string(&calendar)?;
+println!("Calendar JSON: {}", json);
 ```
 
-## Examples
+## 📖 Examples
 
-See the [examples](./examples/) directory for more detailed usage examples:
+See the [examples directory](./examples/) for detailed usage examples:
 
-- [Basic Usage](./examples/basic_usage.rs) - Simple calendar operations
-- [Check Holidays](./examples/check_holidays.rs) - Holiday detection
-- [Holiday Info](./examples/holiday_info.rs) - Detailed holiday information
+- **[Basic Usage](./examples/basic_usage.rs)** - Simple calendar operations and market status checks
+- **[Check Holidays](./examples/check_holidays.rs)** - Holiday detection and listing
+- **[Holiday Info](./examples/holiday_info.rs)** - Detailed holiday information and early close handling
 
-## License
+### Running Examples
+
+```bash
+# Run a specific example
+cargo run --example basic_usage
+
+# Run all examples
+for example in basic_usage check_holidays holiday_info; do
+    cargo run --example $example
+done
+```
+
+## 🧪 Testing
+
+Run the comprehensive test suite:
+
+```bash
+# All tests
+cargo test --all-features
+
+# Specific test categories
+cargo test --test integration_tests
+cargo test --test market_tests
+cargo test --test edge_cases
+```
+
+## 📈 Performance
+
+The library is optimized for performance:
+
+- **LRU Caching**: Holiday calculations are cached per year
+- **Thread-Safe**: Concurrent access with proper eviction
+- **Minimal Allocations**: Optimized data structures
+- **Benchmarks**: Performance benchmarks available in `benches/`
+
+## 🔒 Security
+
+- **Security Audits**: Automated vulnerability scanning in CI
+- **Dependency Updates**: Regular security updates
+- **Safe by Default**: Memory-safe Rust implementation
+
+## 🤝 Contributing
+
+We welcome contributions! Please see [CONTRIBUTING.md](./CONTRIBUTING.md) for:
+
+- Code style guidelines
+- Testing requirements
+- Documentation standards
+- Pull request process
+- Holiday rule verification
+
+## 📄 License
 
 Licensed under either of:
 
-- Apache License, Version 2.0 ([LICENSE-APACHE](LICENSE-APACHE))
-- MIT license ([LICENSE-MIT](LICENSE-MIT))
+- Apache License, Version 2.0 ([LICENSE-APACHE](./LICENSE-APACHE))
+- MIT license ([LICENSE-MIT](./LICENSE-MIT))
 
 at your option.
 
-## Contributing
+## 📞 Support
 
-We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for details.
+- **GitHub Issues**: [Report bugs or request features](https://github.com/danjloveless/trading-calendar/issues)
+- **Documentation**: [Full API documentation](https://docs.rs/trading-calendar)
+- **Examples**: [Usage examples](./examples/)
+- **Changelog**: [Version history](./CHANGELOG.md)
+
+## 🔗 Links
+
+- **Crates.io**: [trading-calendar](https://crates.io/crates/trading-calendar)
+- **Documentation**: [docs.rs](https://docs.rs/trading-calendar)
+- **Repository**: [GitHub](https://github.com/danjloveless/trading-calendar)
+- **CI/CD**: [GitHub Actions](https://github.com/danjloveless/trading-calendar/actions)
+
+---
+
+**Current Version**: 0.2.2  
+**Minimum Rust Version**: 1.65  
+**License**: MIT OR Apache-2.0

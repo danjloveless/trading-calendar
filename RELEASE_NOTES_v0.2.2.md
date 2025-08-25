@@ -15,6 +15,10 @@ This release focuses on improving CI/CD compatibility, code quality, and infrast
   - Changed feature name from `serde` to `serialization` to avoid conflicts
   - Updated all `#[cfg_attr(feature = "serde", ...)]` to use `serialization` feature
   - Ensures compatibility with older Cargo versions
+- **Fixed Rayon Dependency**: Resolved CI failure due to rayon version incompatibility
+  - Pinned rayon to version 1.10.0 to maintain compatibility with Rust 1.65
+  - Prevents automatic upgrades to newer versions that require Rust 1.80+
+  - Ensures CI tests pass across all supported Rust versions (1.65, 1.70, stable)
 
 ### GitHub Actions Updates
 - **Updated Deprecated Actions**: Replaced all deprecated GitHub Actions with latest versions
@@ -122,6 +126,7 @@ All tests pass across multiple Rust versions:
 ## 🐛 Bug Fixes
 
 - Fixed CI failures due to feature name conflicts
+- Fixed CI failures due to rayon dependency version incompatibility
 - Resolved GitHub Actions deprecation warnings
 - Fixed code formatting issues with `cfg_attr` attributes
 - Corrected Rust edition compatibility issues

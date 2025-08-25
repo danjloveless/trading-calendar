@@ -30,7 +30,7 @@ lru = "0.12"
 
 [dev-dependencies]
 criterion = "0.5"
-rayon = "1.10"
+rayon = "=1.10.0"
 
 [features]
 default = []
