@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **CI Network Reliability**: Replaced actions-rs/toolchain@v1 with dtolnay/rust-toolchain@stable for better network resilience
 - **Backup CI Workflow**: Added manual rustup installation with retry logic as fallback
 - **Workflow Consistency**: Updated all GitHub Actions workflows to use reliable toolchain installation
+- **Dependency Compatibility**: Pinned criterion to version 0.4.0 to ensure compatibility with Rust 1.65+ (fixes clap_lex version conflict)
 
 ## [0.2.2] - 2025-08-25
 

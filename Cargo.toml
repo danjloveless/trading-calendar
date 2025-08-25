@@ -29,13 +29,12 @@ dashmap = "6.0"
 lru = "0.12"
 
 [dev-dependencies]
-criterion = "0.5"
+criterion = "=0.4.0"
 rayon = "=1.10.0"
 
 [features]
 default = []
 serialization = ["serde", "chrono/serde"]
-
 [[bench]]
 name = "calendar_bench"
 harness = false
