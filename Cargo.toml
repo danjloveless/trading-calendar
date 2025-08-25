@@ -29,8 +29,8 @@ dashmap = "6.0"
 lru = "0.12"
 
 [dev-dependencies]
-criterion = "=0.4.0"
-rayon = "=1.8.0"
+criterion = "=0.3.6"
+rayon = "=1.7.0"
 
 [features]
 default = []
