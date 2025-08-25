@@ -22,6 +22,35 @@ impl TradingCalendar {
     }
 
     /// Check if a specific date is a trading day
+    ///
+    /// Returns `true` if the market is open for trading on the given date,
+    /// `false` if it's a weekend or holiday.
+    ///
+    /// # Errors
+    ///
+    /// Returns `CalendarError::DateOutOfRange` if the date is outside 2020-2030.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use trading_calendar::{TradingCalendar, Market};
+    /// use chrono::NaiveDate;
+    ///
+    /// let nyse = TradingCalendar::new(Market::NYSE)?;
+    ///
+    /// // Regular trading day
+    /// let regular_day = NaiveDate::from_ymd_opt(2025, 3, 10).unwrap();
+    /// assert!(nyse.is_trading_day(regular_day)?);
+    ///
+    /// // Holiday
+    /// let christmas = NaiveDate::from_ymd_opt(2025, 12, 25).unwrap();
+    /// assert!(!nyse.is_trading_day(christmas)?);
+    ///
+    /// // Weekend
+    /// let saturday = NaiveDate::from_ymd_opt(2025, 3, 8).unwrap();
+    /// assert!(!nyse.is_trading_day(saturday)?);
+    /// # Ok::<(), trading_calendar::CalendarError>(())
+    /// ```
     pub fn is_trading_day(&self, date: NaiveDate) -> Result<bool> {
         if date.year() < MIN_YEAR || date.year() > MAX_YEAR {
             return Err(CalendarError::DateOutOfRange(date));
@@ -30,6 +59,31 @@ impl TradingCalendar {
     }
 
     /// Check if a specific date is a holiday
+    ///
+    /// Returns `true` if the date is a market holiday, `false` otherwise.
+    /// Note that weekends are not considered holidays.
+    ///
+    /// # Errors
+    ///
+    /// Returns `CalendarError::DateOutOfRange` if the date is outside 2020-2030.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use trading_calendar::{TradingCalendar, Market};
+    /// use chrono::NaiveDate;
+    ///
+    /// let nyse = TradingCalendar::new(Market::NYSE)?;
+    ///
+    /// // Christmas is a holiday
+    /// let christmas = NaiveDate::from_ymd_opt(2025, 12, 25).unwrap();
+    /// assert!(nyse.is_holiday(christmas)?);
+    ///
+    /// // Regular weekday is not a holiday
+    /// let regular_day = NaiveDate::from_ymd_opt(2025, 3, 10).unwrap();
+    /// assert!(!nyse.is_holiday(regular_day)?);
+    /// # Ok::<(), trading_calendar::CalendarError>(())
+    /// ```
     pub fn is_holiday(&self, date: NaiveDate) -> Result<bool> {
         if date.year() < MIN_YEAR || date.year() > MAX_YEAR {
             return Err(CalendarError::DateOutOfRange(date));
@@ -147,6 +201,83 @@ impl TradingCalendar {
                     "Invalid timezone conversion for market close".to_string(),
                 )
             })
+    }
+
+    /// Get all trading days in a given month
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use trading_calendar::{TradingCalendar, Market};
+    ///
+    /// let nyse = TradingCalendar::new(Market::NYSE)?;
+    /// let days = nyse.trading_days_in_month(2025, 1)?;
+    /// assert!(days.len() > 15); // January typically has 20+ trading days
+    /// # Ok::<(), trading_calendar::CalendarError>(())
+    /// ```
+    pub fn trading_days_in_month(&self, year: i32, month: u32) -> Result<Vec<NaiveDate>> {
+        if !(MIN_YEAR..=MAX_YEAR).contains(&year) {
+            return Err(CalendarError::DateOutOfRange(
+                NaiveDate::from_ymd_opt(year, month, 1).unwrap_or_default(),
+            ));
+        }
+
+        let mut days = Vec::new();
+        let start = NaiveDate::from_ymd_opt(year, month, 1).ok_or_else(|| {
+            CalendarError::InvalidDateCalculation(format!("Invalid year/month: {year}/{month}"))
+        })?;
+
+        let end = if month == 12 {
+            NaiveDate::from_ymd_opt(year + 1, 1, 1)
+        } else {
+            NaiveDate::from_ymd_opt(year, month + 1, 1)
+        }
+        .ok_or_else(|| {
+            CalendarError::InvalidDateCalculation(format!("Invalid year/month: {year}/{month}"))
+        })?;
+
+        let mut current = start;
+        while current < end {
+            if self.is_trading_day(current)? {
+                days.push(current);
+            }
+            current += chrono::Duration::days(1);
+        }
+
+        Ok(days)
+    }
+
+    /// Count trading days between two dates (inclusive)
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use trading_calendar::{TradingCalendar, Market};
+    /// use chrono::NaiveDate;
+    ///
+    /// let nyse = TradingCalendar::new(Market::NYSE)?;
+    /// let start = NaiveDate::from_ymd_opt(2025, 1, 1).unwrap();
+    /// let end = NaiveDate::from_ymd_opt(2025, 1, 31).unwrap();
+    /// let count = nyse.count_trading_days(start, end)?;
+    /// assert!(count > 15); // January typically has 20+ trading days
+    /// # Ok::<(), trading_calendar::CalendarError>(())
+    /// ```
+    pub fn count_trading_days(&self, start: NaiveDate, end: NaiveDate) -> Result<usize> {
+        if start.year() < MIN_YEAR || end.year() > MAX_YEAR {
+            return Err(CalendarError::DateOutOfRange(start));
+        }
+
+        let mut count = 0;
+        let mut current = start;
+
+        while current <= end {
+            if self.is_trading_day(current)? {
+                count += 1;
+            }
+            current += chrono::Duration::days(1);
+        }
+
+        Ok(count)
     }
 }
 

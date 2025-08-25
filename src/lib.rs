@@ -41,6 +41,39 @@
 //! }
 //! ```
 //!
+//! ## Working with Different Markets
+//!
+//! ```rust
+//! use trading_calendar::{TradingCalendar, Market};
+//!
+//! // Create calendars for different markets
+//! let nyse = TradingCalendar::new(Market::NYSE)?;
+//! let lse = TradingCalendar::new(Market::LSE)?;
+//! let tse = TradingCalendar::new(Market::TSE)?;
+//!
+//! // Each market has its own timezone
+//! assert_eq!(nyse.timezone().name(), "America/New_York");
+//! assert_eq!(lse.timezone().name(), "Europe/London");
+//! assert_eq!(tse.timezone().name(), "Asia/Tokyo");
+//! # Ok::<(), trading_calendar::CalendarError>(())
+//! ```
+//!
+//! ## Handling Early Close Days
+//!
+//! ```rust
+//! use trading_calendar::{TradingCalendar, Market};
+//! use chrono::NaiveDate;
+//!
+//! let nyse = TradingCalendar::new(Market::NYSE)?;
+//! let christmas_eve = NaiveDate::from_ymd_opt(2025, 12, 24).unwrap();
+//!
+//! let hours = nyse.trading_hours(christmas_eve);
+//! if hours.is_early_close() {
+//!     println!("Market closes early at {}", hours.market_close());
+//! }
+//! # Ok::<(), trading_calendar::CalendarError>(())
+//! ```
+//!
 //! ## Supported Markets
 //!
 //! | Market | Regular Hours (Local) | Pre-Market | After-Hours | Status |

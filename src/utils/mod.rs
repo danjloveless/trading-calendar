@@ -1,4 +1,9 @@
 //! Utility functions for calendar operations
+//!
+//! This module provides helper functions for:
+//! - Holiday calculation (Easter dates)
+//! - Date manipulation (nth weekday of month)
+//! - Caching for performance optimization
 
 pub mod cache;
 pub mod easter;

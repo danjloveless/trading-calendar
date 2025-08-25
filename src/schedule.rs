@@ -1,4 +1,20 @@
 //! Trading hours and session definitions
+//!
+//! This module defines the structure for market trading sessions including
+//! regular hours, pre-market, after-hours, and early close times.
+//!
+//! # Example
+//!
+//! ```
+//! use trading_calendar::{Session, TradingHours};
+//! use chrono::{NaiveDate, NaiveTime};
+//!
+//! let regular = Session::new(
+//!     NaiveTime::from_hms_opt(9, 30, 0).unwrap(),
+//!     NaiveTime::from_hms_opt(16, 0, 0).unwrap()
+//! )?;
+//! # Ok::<(), trading_calendar::CalendarError>(())
+//! ```
 
 use crate::{CalendarError, Result};
 use chrono::{NaiveDate, NaiveTime};
