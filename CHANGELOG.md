@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.2] - 2025-08-25
+
+### Fixed
+- **CI Compatibility**: Fixed feature syntax to be compatible with older Cargo versions
+- **Formatting**: Fixed code formatting for cfg_attr attributes
+- **GitHub Actions**: Updated all deprecated actions to latest versions
+
 ## [0.2.1] - 2025-08-25
 
 ### Added
