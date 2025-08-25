@@ -17,12 +17,12 @@ jobs:
     strategy:
       matrix:
         rust: [stable, 1.65, 1.70]
-        features: [default, serde]
+        features: [default, serialization]
         exclude:
           - rust: 1.65
-            features: serde
+            features: serialization
           - rust: 1.70
-            features: serde
+            features: serialization
     
     steps:
     - name: Checkout
@@ -84,8 +84,8 @@ jobs:
     - name: Run clippy
       run: cargo clippy -- -D warnings --deny clippy::all
       
-    - name: Run clippy with serde feature
-      run: cargo clippy --features serde -- -D warnings --deny clippy::all
+    - name: Run clippy with serialization feature
+      run: cargo clippy --features serialization -- -D warnings --deny clippy::all
 
   fmt:
     name: Format Check
@@ -129,10 +129,10 @@ jobs:
           ${{ runner.os }}-cargo-
           
     - name: Check documentation
-      run: cargo doc --no-deps --features serde
+      run: cargo doc --no-deps --features serialization
       
     - name: Check doctests
-      run: cargo test --doc --features serde
+      run: cargo test --doc --features serialization
 
   security:
     name: Security Audit

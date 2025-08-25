@@ -22,7 +22,7 @@ use std::fmt;
 
 /// A trading session with start and end times
 #[derive(Debug, Clone, PartialEq, Eq)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[cfg_attr(feature = "serialization", derive(serde::Serialize, serde::Deserialize))]
 pub struct Session {
     /// Start time of the session
     pub start: NaiveTime,
@@ -72,7 +72,7 @@ impl fmt::Display for Session {
 
 /// Trading hours for a specific date
 #[derive(Debug, Clone, PartialEq, Eq)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[cfg_attr(feature = "serialization", derive(serde::Serialize, serde::Deserialize))]
 pub struct TradingHours {
     /// The date these hours apply to
     pub date: NaiveDate,

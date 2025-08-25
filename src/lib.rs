@@ -170,7 +170,7 @@ pub const MAX_YEAR: i32 = 2030;
 
 /// Holiday information
 #[derive(Debug, Clone, PartialEq, Eq)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[cfg_attr(feature = "serialization", derive(serde::Serialize, serde::Deserialize))]
 pub struct Holiday {
     /// The date of the holiday
     pub date: NaiveDate,

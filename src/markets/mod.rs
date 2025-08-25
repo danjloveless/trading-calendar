@@ -33,7 +33,7 @@ pub mod us;
 
 /// Supported financial markets
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[cfg_attr(feature = "serialization", derive(serde::Serialize, serde::Deserialize))]
 pub enum Market {
     /// New York Stock Exchange
     NYSE,
