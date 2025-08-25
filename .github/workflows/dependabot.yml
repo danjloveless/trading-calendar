@@ -1,0 +1,31 @@
+name: Dependabot
+
+on:
+  schedule:
+    # Check for updates every Monday at 9:00 UTC
+    - cron: '0 9 * * 1'
+  workflow_dispatch:
+
+jobs:
+  dependabot:
+    name: Dependabot
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      
+    - name: Install Rust
+      uses: actions-rs/toolchain@v1
+      with:
+        toolchain: stable
+        override: true
+        
+    - name: Check for outdated dependencies
+      run: |
+        cargo install cargo-outdated
+        cargo outdated --exit-code 1 || echo "Some dependencies are outdated"
+        
+    - name: Check for security vulnerabilities
+      run: |
+        cargo install cargo-audit
+        cargo audit
