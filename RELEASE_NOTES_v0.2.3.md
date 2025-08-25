@@ -1,6 +1,6 @@
 # Release Notes - trading-calendar v0.2.3
 
-**Date**: January 27, 2025  
+**Date**: August 25, 2025  
 **Version**: 0.2.3  
 **Previous Version**: 0.2.2
 
