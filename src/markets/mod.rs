@@ -1,4 +1,25 @@
 //! Market definitions and implementations
+//!
+//! This module provides market-specific implementations for various global exchanges.
+//! Each market has its own holiday calendar, trading hours, and timezone.
+//!
+//! # Supported Markets
+//!
+//! - **NYSE/NASDAQ**: US markets with pre-market and after-hours trading
+//! - **LSE**: London Stock Exchange with UK bank holidays  
+//! - **TSE**: Tokyo Stock Exchange with Japanese national holidays
+//! - **TSX**: Toronto Stock Exchange with Canadian holidays
+//!
+//! # Example
+//!
+//! ```
+//! use trading_calendar::{Market, TradingCalendar};
+//!
+//! let market = Market::NYSE;
+//! let calendar = TradingCalendar::new(market)?;
+//! assert_eq!(market.timezone().name(), "America/New_York");
+//! # Ok::<(), trading_calendar::CalendarError>(())
+//! ```
 
 use crate::{Result, TradingHours};
 use chrono::{Datelike, NaiveDate, Weekday};
@@ -108,6 +129,23 @@ impl Market {
 impl fmt::Display for Market {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "{}", self.name())
+    }
+}
+
+impl std::str::FromStr for Market {
+    type Err = crate::CalendarError;
+
+    fn from_str(s: &str) -> std::result::Result<Self, Self::Err> {
+        match s.to_uppercase().as_str() {
+            "NYSE" => Ok(Market::NYSE),
+            "NASDAQ" => Ok(Market::NASDAQ),
+            "LSE" => Ok(Market::LSE),
+            "TSE" => Ok(Market::TSE),
+            "TSX" => Ok(Market::TSX),
+            _ => Err(crate::CalendarError::InvalidConfiguration(format!(
+                "Unknown market: {s}"
+            ))),
+        }
     }
 }
 
