@@ -34,7 +34,7 @@ rayon = "1.10"
 
 [features]
 default = []
-serialization = ["dep:serde", "chrono/serde"]
+serialization = ["serde", "chrono/serde"]
 
 [[bench]]
 name = "calendar_bench"
