@@ -1,3 +1,6 @@
+// Copyright (c) 2024 Trading Calendar Contributors
+// Licensed under the MIT License and Apache License, Version 2.0
+//
 //! # Trading Calendar
 //!
 //! A comprehensive trading calendar for global financial markets, providing holidays,
