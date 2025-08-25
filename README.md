@@ -4,7 +4,7 @@
 [![Documentation](https://docs.rs/trading-calendar/badge.svg)](https://docs.rs/trading-calendar)
 [![License](https://img.shields.io/crates/l/trading-calendar.svg)](https://github.com/danjloveless/trading-calendar#license)
 [![CI](https://github.com/danjloveless/trading-calendar/workflows/CI/badge.svg)](https://github.com/danjloveless/trading-calendar/actions)
-[![Rust Version](https://img.shields.io/badge/rust-1.65+-blue.svg)](https://www.rust-lang.org)
+[![Rust Version](https://img.shields.io/badge/rust-1.75+-blue.svg)](https://www.rust-lang.org)
 
 A comprehensive trading calendar for global financial markets, providing holidays, trading hours, and early close information. Built with performance and reliability in mind, this library supports major exchanges worldwide with accurate holiday calculations and timezone handling.
 
@@ -14,7 +14,7 @@ A comprehensive trading calendar for global financial markets, providing holiday
 - **[Examples](./examples/)** - Practical usage examples and tutorials
 - **[Changelog](./CHANGELOG.md)** - Version history and changes
 - **[Contributing](./CONTRIBUTING.md)** - How to contribute to the project
-- **[Release Notes v0.2.2](./RELEASE_NOTES_v0.2.2.md)** - Detailed release information
+- **[Release Notes v0.2.3](./RELEASE_NOTES_v0.2.3.md)** - Detailed release information
 
 ## ✨ Features
 
@@ -37,10 +37,10 @@ Add to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-trading-calendar = "0.2.2"
+trading-calendar = "0.2.3"
 
 # With serialization support
-trading-calendar = { version = "0.2.2", features = ["serialization"] }
+trading-calendar = { version = "0.2.3", features = ["serialization"] }
 ```
 
 ### Basic Usage
@@ -157,7 +157,7 @@ Enable serialization features for JSON support:
 ```rust
 use trading_calendar::{TradingCalendar, Market};
 
-// In Cargo.toml: trading-calendar = { version = "0.2.2", features = ["serialization"] }
+// In Cargo.toml: trading-calendar = { version = "0.2.3", features = ["serialization"] }
 
 let calendar = TradingCalendar::new(Market::NYSE)?;
 let json = serde_json::to_string(&calendar)?;
@@ -248,6 +248,6 @@ at your option.
 
 ---
 
-**Current Version**: 0.2.2  
-**Minimum Rust Version**: 1.65  
+**Current Version**: 0.2.3  
+**Minimum Rust Version**: 1.75  
 **License**: MIT OR Apache-2.0
