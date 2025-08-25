@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.3] - 2025-01-27
+
 ### Fixed
 - **CI Network Reliability**: Replaced actions-rs/toolchain@v1 with dtolnay/rust-toolchain@stable for better network resilience
 - **Backup CI Workflow**: Added manual rustup installation with retry logic as fallback
@@ -63,6 +65,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Support for early close days
 - Cache management for performance
 
-[Unreleased]: https://github.com/danjloveless/trading-calendar/compare/v0.2.1...HEAD
+[Unreleased]: https://github.com/danjloveless/trading-calendar/compare/v0.2.3...HEAD
+[0.2.3]: https://github.com/danjloveless/trading-calendar/compare/v0.2.2...v0.2.3
+[0.2.2]: https://github.com/danjloveless/trading-calendar/compare/v0.2.1...v0.2.2
 [0.2.1]: https://github.com/danjloveless/trading-calendar/compare/v0.2.0...v0.2.1
 [0.2.0]: https://github.com/danjloveless/trading-calendar/releases/tag/v0.2.0

@@ -1,6 +1,6 @@
 [package]
 name = "trading-calendar"
-version = "0.2.2"
+version = "0.2.3"
 edition = "2021"
 authors = ["Trading Calendar Contributors"]
 description = "Comprehensive trading calendar with holidays and hours for global markets"
