@@ -16,7 +16,7 @@ This release focuses on resolving critical CI/CD issues and dependency compatibi
 - **Workflow Consistency**: Updated all GitHub Actions workflows to use reliable toolchain installation
 
 ### Dependency Compatibility
-- **Pinned Dependencies**: Pinned `criterion` to version 0.3.4 and `rayon` to version 1.5.0
+- **Pinned Dependencies**: Pinned `criterion` to version 0.3.3 and `rayon` to version 1.4.0
 - **Version Conflicts**: Resolved `clap_lex` and `rayon-core` version conflicts
 - **Minimum Rust Version**: Updated from 1.65 to 1.75 to ensure compatibility
 
