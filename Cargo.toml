@@ -1,0 +1,38 @@
+[package]
+name = "trading-calendar"
+version = "0.2.0"
+edition = "2021"
+authors = ["Trading Calendar Contributors"]
+description = "Comprehensive trading calendar with holidays and hours for global markets"
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/danjloveless/trading-calendar"
+documentation = "https://docs.rs/trading-calendar"
+homepage = "https://github.com/danjloveless/trading-calendar"
+readme = "README.md"
+keywords = ["trading", "finance", "calendar", "market", "hours"]
+categories = ["date-and-time", "finance"]
+rust-version = "1.65"
+
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "docsrs"]
+
+[dependencies]
+chrono = { version = "0.4", features = ["serde"] }
+chrono-tz = "0.10"
+thiserror = "2.0.0"
+serde = { version = "1.0", features = ["derive"], optional = true }
+dashmap = "6.0"
+lru = "0.12"
+
+[dev-dependencies]
+criterion = "0.5"
+rayon = "1.10"
+
+[features]
+default = []
+serde = ["dep:serde", "chrono/serde"]
+
+[[bench]]
+name = "calendar_bench"
+harness = false
