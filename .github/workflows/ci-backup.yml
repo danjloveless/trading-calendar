@@ -12,12 +12,12 @@ jobs:
     if: ${{ github.event.workflow_run.conclusion == 'failure' }}
     strategy:
       matrix:
-        rust: [stable, 1.65, 1.70]
+        rust: [stable, 1.75, 1.80]
         features: [default, serialization]
         exclude:
-          - rust: 1.65
+          - rust: 1.75
             features: serialization
-          - rust: 1.70
+          - rust: 1.80
             features: serialization
     
     steps:

@@ -11,7 +11,7 @@ homepage = "https://github.com/danjloveless/trading-calendar"
 readme = "README.md"
 keywords = ["trading", "finance", "calendar", "market", "hours"]
 categories = ["date-and-time", "finance"]
-rust-version = "1.65"
+rust-version = "1.75"
 
 [package.metadata.docs.rs]
 all-features = true
@@ -29,8 +29,8 @@ dashmap = "6.0"
 lru = "0.12"
 
 [dev-dependencies]
-criterion = "=0.3.6"
-rayon = "=1.7.0"
+criterion = "=0.3.4"
+rayon = "=1.5.0"
 
 [features]
 default = []
