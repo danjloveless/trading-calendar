@@ -29,7 +29,7 @@ dashmap = "6.0"
 lru = "0.12"
 
 [dev-dependencies]
-criterion = "=0.3.3"
+criterion = "=0.7.0"
 rayon = "=1.4.0"
 
 [features]
