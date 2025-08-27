@@ -18,6 +18,7 @@ updates:
     labels:
       - "dependencies"
       - "rust"
+      - "github-actions"
     ignore:
       # Ignore major version updates for critical dependencies
       - dependency-name: "chrono"

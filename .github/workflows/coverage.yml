@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       
     - name: Install Rust
       uses: dtolnay/rust-toolchain@stable
@@ -26,7 +26,7 @@ jobs:
       run: cargo tarpaulin --features serialization --out Xml --output-dir coverage
       
     - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v4
+      uses: codecov/codecov-action@v5
       with:
         file: ./coverage/cobertura.xml
         flags: unittests

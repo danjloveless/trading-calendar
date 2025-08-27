@@ -26,11 +26,12 @@ chrono-tz = "0.10"
 thiserror = "2.0.0"
 serde = { version = "1.0", features = ["derive"], optional = true }
 dashmap = "6.0"
-lru = "0.12"
+lru = "0.16"
 
 [dev-dependencies]
 criterion = "=0.7.0"
-rayon = "=1.4.0"
+rayon = "=1.11.0"
+
 
 [features]
 default = []
